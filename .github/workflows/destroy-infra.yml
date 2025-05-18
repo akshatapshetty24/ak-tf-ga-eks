@@ -18,19 +18,13 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.7.5
+          terraform_version: 1.7.5 
 
-      - name: Update kubeconfig
-        run: aws eks update-kubeconfig --name ${{ secrets.CLUSTER_NAME }} --region ${{ secrets.AWS_REGION }}
-
-      - name: Delete K8s Deployment & Service
-        run: |
-          kubectl delete -f terraform/k8s/ || true
-
+      
       - name: Initialize Terraform
         working-directory: terraform/infra/
         run: |
-          terraform init -backend-config="dynamodb_table=ksp-tf-ga-node-js-locks" -backend-config="bucket=ksp-tf-ga-node-js-state-bucket"
+          terraform init -backend-config="dynamodb_table=ak-tf-ga-node-js-locks" -backend-config="bucket=ak-tf-ga-node-js-state-bucket"
 
       - name: Terraform Destroy AWS Infra
         working-directory: terraform/infra/
